@@ -1,0 +1,10 @@
+com\example\fileuploadservice\dao\impl\FileUploadDAOImpl.class
+com\example\fileuploadservice\FileUploadServiceApplication.class
+com\example\fileuploadservice\config\S3Config.class
+com\example\fileuploadservice\service\impl\FileUploadServiceImpl.class
+com\example\fileuploadservice\controller\FileUploadController.class
+com\example\fileuploadservice\service\FileUploadService.class
+com\example\fileuploadservice\config\ResilienceConfig.class
+com\example\fileuploadservice\dao\FileUploadDAO.class
+com\example\fileuploadservice\repository\InputFileRepository.class
+com\example\fileuploadservice\model\InputFile.class
