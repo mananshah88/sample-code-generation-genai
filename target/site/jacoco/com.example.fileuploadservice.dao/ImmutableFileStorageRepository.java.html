@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmutableFileStorageRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-upload-service</a> &gt; <a href="index.source.html" class="el_package">com.example.fileuploadservice.dao</a> &gt; <span class="el_source">ImmutableFileStorageRepository.java</span></div><h1>ImmutableFileStorageRepository.java</h1><pre class="source lang-java linenums">package com.example.fileuploadservice.dao;
+
+import com.example.fileuploadservice.model.FileStorage;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
+import java.util.function.Function;
+
+/**
+ * Immutable wrapper for FileStorageRepository to prevent modification of internal state
+ */
+public final class ImmutableFileStorageRepository implements FileStorageRepository {
+    private final FileStorageRepository delegate;
+
+<span class="fc" id="L19">    public ImmutableFileStorageRepository(FileStorageRepository delegate) {</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (delegate == null) {</span>
+<span class="nc" id="L21">            throw new IllegalArgumentException(&quot;FileStorageRepository delegate cannot be null&quot;);</span>
+        }
+<span class="fc" id="L23">        this.delegate = delegate;</span>
+<span class="fc" id="L24">    }</span>
+
+    @Override
+    public List&lt;FileStorage&gt; findByOrderId(String orderId) {
+<span class="fc" id="L28">        return delegate.findByOrderId(orderId);</span>
+    }
+
+    @Override
+    public Optional&lt;FileStorage&gt; findByOrderIdAndFileName(String orderId, String fileName) {
+<span class="fc" id="L33">        return delegate.findByOrderIdAndFileName(orderId, fileName);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; S save(S entity) {
+<span class="fc" id="L38">        return delegate.save(entity);</span>
+    }
+
+    @Override
+    public void delete(FileStorage entity) {
+<span class="fc" id="L43">        delegate.delete(entity);</span>
+<span class="fc" id="L44">    }</span>
+
+    @Override
+    public void flush() {
+<span class="nc" id="L48">        delegate.flush();</span>
+<span class="nc" id="L49">    }</span>
+
+    @Override
+    public &lt;S extends FileStorage&gt; S saveAndFlush(S entity) {
+<span class="nc" id="L53">        return delegate.saveAndFlush(entity);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; List&lt;S&gt; saveAllAndFlush(Iterable&lt;S&gt; entities) {
+<span class="nc" id="L58">        return delegate.saveAllAndFlush(entities);</span>
+    }
+
+    @Override
+    public void deleteAllInBatch(Iterable&lt;FileStorage&gt; entities) {
+<span class="nc" id="L63">        delegate.deleteAllInBatch(entities);</span>
+<span class="nc" id="L64">    }</span>
+
+    @Override
+    public void deleteAllByIdInBatch(Iterable&lt;Long&gt; ids) {
+<span class="nc" id="L68">        delegate.deleteAllByIdInBatch(ids);</span>
+<span class="nc" id="L69">    }</span>
+
+    @Override
+    public void deleteAllInBatch() {
+<span class="nc" id="L73">        delegate.deleteAllInBatch();</span>
+<span class="nc" id="L74">    }</span>
+
+    @Override
+    public FileStorage getOne(Long id) {
+<span class="nc" id="L78">        return delegate.getOne(id);</span>
+    }
+
+    @Override
+    public FileStorage getById(Long id) {
+<span class="nc" id="L83">        return delegate.getById(id);</span>
+    }
+
+    @Override
+    public FileStorage getReferenceById(Long id) {
+<span class="nc" id="L88">        return delegate.getReferenceById(id);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; List&lt;S&gt; findAll(Example&lt;S&gt; example) {
+<span class="nc" id="L93">        return delegate.findAll(example);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; List&lt;S&gt; findAll(Example&lt;S&gt; example, Sort sort) {
+<span class="nc" id="L98">        return delegate.findAll(example, sort);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; List&lt;S&gt; saveAll(Iterable&lt;S&gt; entities) {
+<span class="nc" id="L103">        return delegate.saveAll(entities);</span>
+    }
+
+    @Override
+    public List&lt;FileStorage&gt; findAll() {
+<span class="nc" id="L108">        return delegate.findAll();</span>
+    }
+
+    @Override
+    public List&lt;FileStorage&gt; findAllById(Iterable&lt;Long&gt; ids) {
+<span class="nc" id="L113">        return delegate.findAllById(ids);</span>
+    }
+
+    @Override
+    public Optional&lt;FileStorage&gt; findById(Long id) {
+<span class="nc" id="L118">        return delegate.findById(id);</span>
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+<span class="nc" id="L123">        return delegate.existsById(id);</span>
+    }
+
+    @Override
+    public long count() {
+<span class="nc" id="L128">        return delegate.count();</span>
+    }
+
+    @Override
+    public void deleteById(Long id) {
+<span class="nc" id="L133">        delegate.deleteById(id);</span>
+<span class="nc" id="L134">    }</span>
+
+    @Override
+    public void deleteAllById(Iterable&lt;? extends Long&gt; ids) {
+<span class="nc" id="L138">        delegate.deleteAllById(ids);</span>
+<span class="nc" id="L139">    }</span>
+
+    @Override
+    public void deleteAll(Iterable&lt;? extends FileStorage&gt; entities) {
+<span class="nc" id="L143">        delegate.deleteAll(entities);</span>
+<span class="nc" id="L144">    }</span>
+
+    @Override
+    public void deleteAll() {
+<span class="nc" id="L148">        delegate.deleteAll();</span>
+<span class="nc" id="L149">    }</span>
+
+    @Override
+    public List&lt;FileStorage&gt; findAll(Sort sort) {
+<span class="nc" id="L153">        return delegate.findAll(sort);</span>
+    }
+
+    @Override
+    public Page&lt;FileStorage&gt; findAll(Pageable pageable) {
+<span class="nc" id="L158">        return delegate.findAll(pageable);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; Optional&lt;S&gt; findOne(Example&lt;S&gt; example) {
+<span class="nc" id="L163">        return delegate.findOne(example);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; Page&lt;S&gt; findAll(Example&lt;S&gt; example, Pageable pageable) {
+<span class="nc" id="L168">        return delegate.findAll(example, pageable);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; long count(Example&lt;S&gt; example) {
+<span class="nc" id="L173">        return delegate.count(example);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage&gt; boolean exists(Example&lt;S&gt; example) {
+<span class="nc" id="L178">        return delegate.exists(example);</span>
+    }
+
+    @Override
+    public &lt;S extends FileStorage, R&gt; R findBy(Example&lt;S&gt; example,
+            Function&lt;FluentQuery.FetchableFluentQuery&lt;S&gt;, R&gt; queryFunction) {
+<span class="nc" id="L184">        return delegate.findBy(example, queryFunction);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

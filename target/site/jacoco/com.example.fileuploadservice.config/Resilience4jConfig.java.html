@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Resilience4jConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-upload-service</a> &gt; <a href="index.source.html" class="el_package">com.example.fileuploadservice.config</a> &gt; <span class="el_source">Resilience4jConfig.java</span></div><h1>Resilience4jConfig.java</h1><pre class="source lang-java linenums">package com.example.fileuploadservice.config;
+
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
+import org.springframework.cloud.client.circuitbreaker.Customizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
+
+@Configuration
+<span class="nc" id="L14">public class Resilience4jConfig {</span>
+
+    @Bean
+    public Customizer&lt;Resilience4JCircuitBreakerFactory&gt; defaultCustomizer() {
+<span class="nc" id="L18">        return factory -&gt; factory.configureDefault(id -&gt; new Resilience4JConfigBuilder(id)</span>
+<span class="nc" id="L19">                .circuitBreakerConfig(CircuitBreakerConfig.custom()</span>
+<span class="nc" id="L20">                        .slidingWindowSize(10)</span>
+<span class="nc" id="L21">                        .failureRateThreshold(50)</span>
+<span class="nc" id="L22">                        .waitDurationInOpenState(Duration.ofSeconds(10))</span>
+<span class="nc" id="L23">                        .permittedNumberOfCallsInHalfOpenState(5)</span>
+<span class="nc" id="L24">                        .build())</span>
+<span class="nc" id="L25">                .timeLimiterConfig(TimeLimiterConfig.custom()</span>
+<span class="nc" id="L26">                        .timeoutDuration(Duration.ofSeconds(3))</span>
+<span class="nc" id="L27">                        .build())</span>
+<span class="nc" id="L28">                .build());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

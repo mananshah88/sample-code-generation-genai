@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="file"] {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>File Upload Service</h1>
+    
+    <div class="form-group">
+        <label for="orderId">Order ID:</label>
+        <input type="text" id="orderId" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="file">Select File:</label>
+        <input type="file" id="file" required>
+    </div>
+    
+    <button onclick="uploadFile()">Upload File</button>
+    
+    <div id="response"></div>
+
+    <script>
+        function uploadFile() {
+            const orderId = document.getElementById('orderId').value;
+            const fileInput = document.getElementById('file');
+            const responseDiv = document.getElementById('response');
+            
+            if (!orderId || !fileInput.files[0]) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            
+            fetch(`/api/files/upload/${orderId}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseDiv.style.display = 'block';
+                responseDiv.innerHTML = `
+                    <h3>File Uploaded Successfully</h3>
+                    <p>File Name: ${data.fileName}</p>
+                    <p>Order ID: ${data.orderId}</p>
+                `;
+            })
+            .catch(error => {
+                responseDiv.style.display = 'block';
+                responseDiv.innerHTML = `<p style="color: red">Error: ${error.message}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

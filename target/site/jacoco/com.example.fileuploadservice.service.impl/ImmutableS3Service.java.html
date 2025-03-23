@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImmutableS3Service.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-upload-service</a> &gt; <a href="index.source.html" class="el_package">com.example.fileuploadservice.service.impl</a> &gt; <span class="el_source">ImmutableS3Service.java</span></div><h1>ImmutableS3Service.java</h1><pre class="source lang-java linenums">package com.example.fileuploadservice.service.impl;
+
+import com.example.fileuploadservice.service.S3Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+
+/**
+ * Immutable wrapper for S3Service to prevent modification of internal state
+ */
+public final class ImmutableS3Service implements S3Service {
+    private final S3Service delegate;
+
+<span class="fc" id="L13">    public ImmutableS3Service(S3Service delegate) {</span>
+<span class="pc bpc" id="L14" title="1 of 2 branches missed.">        if (delegate == null) {</span>
+<span class="nc" id="L15">            throw new IllegalArgumentException(&quot;S3Service delegate cannot be null&quot;);</span>
+        }
+<span class="fc" id="L17">        this.delegate = delegate;</span>
+<span class="fc" id="L18">    }</span>
+
+    @Override
+    public String uploadFile(String orderId, MultipartFile file) throws IOException {
+<span class="fc" id="L22">        return delegate.uploadFile(orderId, file);</span>
+    }
+
+    @Override
+    public void deleteFile(String orderId, String fileName) {
+<span class="fc" id="L27">        delegate.deleteFile(orderId, fileName);</span>
+<span class="fc" id="L28">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

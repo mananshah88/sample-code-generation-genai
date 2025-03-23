@@ -1,0 +1,12 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+file-upload-service,com.example.fileuploadservice.model,FileStorage,215,38,46,0,1,7,28,11,5,11
+file-upload-service,com.example.fileuploadservice.config,Resilience4jConfig,33,0,0,0,12,0,4,0,4,0
+file-upload-service,com.example.fileuploadservice.config,OpenApiConfig,17,0,0,0,6,0,2,0,2,0
+file-upload-service,com.example.fileuploadservice.config,S3Config,25,0,0,0,6,0,2,0,2,0
+file-upload-service,com.example.fileuploadservice.config,RateLimiterConfiguration,21,0,0,0,8,0,2,0,2,0
+file-upload-service,com.example.fileuploadservice.dao,ImmutableFileStorageRepository,147,30,1,1,37,9,29,5,28,5
+file-upload-service,com.example.fileuploadservice.service.impl,ImmutableS3Service,5,20,1,1,1,7,1,3,0,3
+file-upload-service,com.example.fileuploadservice.service.impl,S3ServiceImpl,5,74,1,5,1,19,1,7,0,5
+file-upload-service,com.example.fileuploadservice.service.impl,FileStorageServiceImpl,45,136,9,9,11,38,8,8,0,7
+file-upload-service,com.example.fileuploadservice,FileUploadServiceApplication,8,0,0,0,3,0,2,0,2,0
+file-upload-service,com.example.fileuploadservice.controller,FileUploadController,15,75,0,0,5,15,2,8,2,8

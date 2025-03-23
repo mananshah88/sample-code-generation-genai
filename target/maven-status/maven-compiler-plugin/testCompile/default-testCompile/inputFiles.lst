@@ -1,0 +1,4 @@
+/home/manan/CascadeProjects/file-upload-service/src/test/java/com/example/fileuploadservice/KarateTests.java
+/home/manan/CascadeProjects/file-upload-service/src/test/java/com/example/fileuploadservice/service/FileStorageServiceTest.java
+/home/manan/CascadeProjects/file-upload-service/src/test/java/com/example/fileuploadservice/controller/FileUploadControllerTest.java
+/home/manan/CascadeProjects/file-upload-service/src/test/java/com/example/fileuploadservice/service/S3ServiceTest.java

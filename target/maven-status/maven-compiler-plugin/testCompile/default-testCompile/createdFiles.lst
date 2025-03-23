@@ -1,0 +1,4 @@
+com/example/fileuploadservice/controller/FileUploadControllerTest.class
+com/example/fileuploadservice/KarateTests.class
+com/example/fileuploadservice/service/FileStorageServiceTest.class
+com/example/fileuploadservice/service/S3ServiceTest.class

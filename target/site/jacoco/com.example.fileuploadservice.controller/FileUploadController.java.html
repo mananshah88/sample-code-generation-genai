@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileUploadController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">file-upload-service</a> &gt; <a href="index.source.html" class="el_package">com.example.fileuploadservice.controller</a> &gt; <span class="el_source">FileUploadController.java</span></div><h1>FileUploadController.java</h1><pre class="source lang-java linenums">package com.example.fileuploadservice.controller;
+
+import com.example.fileuploadservice.model.FileStorage;
+import com.example.fileuploadservice.service.FileStorageService;
+import io.github.resilience4j.ratelimiter.RateLimiter;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/api/files&quot;)
+@Tag(name = &quot;File Upload Controller&quot;, description = &quot;APIs for file upload operations&quot;)
+<span class="fc" id="L25">public class FileUploadController {</span>
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @Autowired
+    private CircuitBreakerFactory circuitBreakerFactory;
+
+    @Autowired
+    private RateLimiter rateLimiter;
+
+    @PostMapping(&quot;/upload/{orderId}&quot;)
+    @Operation(summary = &quot;Upload a file&quot;, description = &quot;Upload a file associated with an order ID&quot;)
+    public ResponseEntity&lt;?&gt; uploadFile(
+            @Parameter(description = &quot;Order ID to associate the file with&quot;) @PathVariable String orderId,
+            @Parameter(description = &quot;File to upload&quot;) @RequestParam(&quot;file&quot;) MultipartFile file) {
+<span class="fc" id="L41">        return RateLimiter.decorateSupplier(rateLimiter, () -&gt; {</span>
+<span class="fc" id="L42">            CircuitBreaker circuitBreaker = circuitBreakerFactory.create(&quot;uploadCircuitBreaker&quot;);</span>
+<span class="fc" id="L43">            return circuitBreaker.run(</span>
+                () -&gt; {
+                    try {
+<span class="fc" id="L46">                        return ResponseEntity.ok(fileStorageService.storeFile(orderId, file));</span>
+<span class="fc" id="L47">                    } catch (IOException e) {</span>
+<span class="fc" id="L48">                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="fc" id="L49">                                .body(&quot;Failed to process file: &quot; + e.getMessage());</span>
+<span class="nc" id="L50">                    } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L51">                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L52">                                .body(e.getMessage());</span>
+                    }
+                },
+<span class="nc" id="L55">                throwable -&gt; ResponseEntity.internalServerError().body(&quot;Service is temporarily unavailable&quot;)</span>
+            );
+<span class="fc" id="L57">        }).get();</span>
+    }
+
+    @GetMapping(&quot;/{orderId}&quot;)
+    @Operation(summary = &quot;Get files by order ID&quot;, description = &quot;Retrieve all files associated with an order ID&quot;)
+    public ResponseEntity&lt;?&gt; getFilesByOrderId(
+            @Parameter(description = &quot;Order ID to fetch files for&quot;) @PathVariable String orderId) {
+<span class="fc" id="L64">        return RateLimiter.decorateSupplier(rateLimiter, () -&gt; {</span>
+<span class="fc" id="L65">            CircuitBreaker circuitBreaker = circuitBreakerFactory.create(&quot;getFilesCircuitBreaker&quot;);</span>
+<span class="fc" id="L66">            return circuitBreaker.run(</span>
+<span class="fc" id="L67">                () -&gt; ResponseEntity.ok(fileStorageService.getFilesByOrderId(orderId)),</span>
+<span class="nc" id="L68">                throwable -&gt; ResponseEntity.internalServerError().body(&quot;Service is temporarily unavailable&quot;)</span>
+            );
+<span class="fc" id="L70">        }).get();</span>
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity&lt;String&gt; rateLimiterExceptionHandler(RequestNotPermitted ex) {
+<span class="fc" id="L75">        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(&quot;Too many requests - please try again later&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
